@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Tool</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script>
+        // Function to copy text to clipboard
+        function copyToClipboard(content, button) {
+            navigator.clipboard.writeText(content).then(function() {
+                // Change the button text to 'Copied'
+                button.textContent = 'Copied [encrypted message/key]';
+                // Add class for the animation effect
+                button.classList.add('copy-effect');
+            }).catch(function(error) {
+                // In case of an error
+                button.textContent = 'Failed to copy';
+                // You can define and add an 'error-button' class in your CSS for error state
+                button.classList.add('error-button');
+            });
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Encryption/Decryption Tool</h1>
+        <form action="/" method="post" class="form-layout">
+            <div class="input-group">
+                <textarea class="text-input" name="message" placeholder="Enter your message here"></textarea>
+            </div>
+            <div class="input-group">
+                <input class="text-input" type="text" name="key" placeholder="Enter your key here">
+            </div>
+            <div class="input-group">
+                <input class="text-input" type="text" name="encrypted_message" placeholder="Enter encrypted message here">
+            </div>
+            <div class="button-group">
+                <input class="button" type="submit" name="operation" value="Encrypt">
+                <input class="button" type="submit" name="operation" value="Decrypt">
+            </div>
+        </form>
+        <div class="output-messages">
+            {% if encrypted_message %}
+                <div class="message-box">
+                    <p>Encrypted Message: <span id="encryptedMsgContent">{{ encrypted_message }}</span></p>
+                    <button class="button" onclick="copyToClipboard(document.getElementById('encryptedMsgContent').innerText, this)">Copy Message</button>
+                    <p>Key: <span id="keyContent">{{ key }}</span></p>
+                    <button class="button" onclick="copyToClipboard(document.getElementById('keyContent').innerText, this)">Copy Key</button>
+                </div>
+            {% elif decrypted_message %}
+                <div class="message-box">
+                    <p>Decrypted Message: <span id="decryptedMsgContent">{{ decrypted_message }}</span></p>
+                    <button class="button" onclick="copyToClipboard(document.getElementById('decryptedMsgContent').innerText, this)">Copy Message</button>
+                </div>
+            {% elif error %}
+                <!-- ...error message display... -->
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
